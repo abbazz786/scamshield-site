@@ -1,8 +1,24 @@
-# ScamShield UK
+# ScamShield UK (scamshield.org.uk)
 
 > Free AI-powered scam detection tool for UK consumers. No account required.
 
-ScamShield UK helps people in the United Kingdom identify and report scams. Users can paste suspicious messages from WhatsApp, email, or text, upload screenshots for OCR analysis, investigate phone numbers, email addresses, URLs, and company names, and get instant threat intelligence reports.
+## Important Disclaimer
+
+ScamShield UK (scamshield.org.uk) is an independent, free community tool that helps UK residents check suspicious messages for signs of fraud. It is NOT a government website and is NOT affiliated with the Singapore Government's ScamShield app (scamshield.gov.sg). ScamShield UK does not collect, store, or share any personal data. It does not ask users for bank details, passwords, or personal information. The tool directs users to official UK reporting channels such as Action Fraud, the FCA, and the ICO.
+
+## What It Does
+
+ScamShield UK helps people in the United Kingdom identify and report scams. Users can paste suspicious messages from WhatsApp, email, or text, upload screenshots for OCR analysis, investigate phone numbers, email addresses, URLs, and company names, and get instant threat intelligence reports. The tool uses AI to analyse message content against 50+ known fraud patterns and provides plain-English explanations of risk.
+
+## Trust and Safety
+
+- No personal data is collected or stored
+- No account or registration required
+- No passwords or bank details are ever requested
+- Uses essential cookies only — no tracking, no advertising
+- All analysis happens in real time and is not saved
+- Directs users to official UK authorities for reporting
+- Open and transparent about its independent status
 
 ## Features
 
@@ -14,11 +30,7 @@ ScamShield UK helps people in the United Kingdom identify and report scams. User
 - Educational database covering 30+ scam types
 - Completely free, no account needed, no data stored
 
-## Scam Types Covered
-
-Pig butchering, romance scams, WhatsApp OTP fraud, fake HMRC calls, delivery scams, SIM swap attacks, cryptocurrency fraud, fake job offers, elder fraud, bank impersonation, doorstep scams, gaming scams, investment fraud, phishing, vishing, smishing, advance fee fraud, pension scams, ticket scams, holiday scams, and more.
-
-## UK Reporting Channels
+## Official UK Reporting Channels (Not Affiliated — We Direct Users Here)
 
 - Action Fraud (reporting.reportfraud.police.uk) — National fraud reporting
 - FCA (Financial Conduct Authority) — Financial scams
