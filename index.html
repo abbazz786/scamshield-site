@@ -215,49 +215,18 @@
       padding-bottom: calc(8px + env(safe-area-inset-bottom));
     }
 
-    .tabs { display:none; }
-    .tab { border:none; background:transparent; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; padding:5px 8px; border-radius:var(--radius); transition:all .15s; }
-    .tab-content { display:none; }
-    .tab-content.active { display:none; } /* hidden — unified bar handles input */
+    .tabs { display:flex; gap:2px; margin-bottom:8px; background:var(--grey4); padding:3px; border-radius:var(--radius); }
+    .tab {
+      flex:1; border:none; background:transparent;
+      color:var(--grey2); cursor:pointer;
+      font-family:'DM Sans',sans-serif;
+      font-size:12px; font-weight:600;
+      padding:5px 4px; border-radius:var(--radius); transition:all .15s;
+    }
+    .tab.active { background:var(--white); color:var(--blue-dk); box-shadow:0 1px 3px rgba(0,0,0,.1); }
 
-    /* Unified search bar */
-    .unified-bar {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .unified-textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding-right: 12px !important;
-    }
-    .unified-bar-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 6px;
-    }
-    .attach-btn {
-      background: var(--grey4);
-      border: 1px solid var(--grey3);
-      border-radius: var(--radius);
-      padding: 6px 10px;
-      font-size: 16px;
-      cursor: pointer;
-      color: var(--grey1);
-      transition: background .15s;
-    }
-    .attach-btn:hover { background: var(--grey3); }
-    .investigate-btn {
-      background: linear-gradient(135deg,#003078,#0077cc) !important;
-      color: #FFD600 !important;
-      border: none !important;
-      border-radius: var(--radius) !important;
-      padding: 6px 12px !important;
-      font-size: 15px !important;
-      font-weight: 700 !important;
-      cursor: pointer;
-    }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
 
     .chat-textarea {
       width:100%; min-height:64px; max-height:110px;
@@ -957,25 +926,30 @@
     </div>
 
     <div class="input-area">
-      <!-- Unified search bar -->
-      <div class="unified-bar">
-        <textarea class="chat-textarea unified-textarea" id="pasteInput" id2="askInput" placeholder="Paste a suspicious message or ask me anything..."></textarea>
-        <div class="unified-bar-actions">
-          <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Attach screenshot or PDF">📎</button>
-          <button class="tab investigate-btn" onclick="ui.switchTab('investigate')" title="Deep investigation">🤖</button>
+      <div class="tabs">
+        <button class="tab active" onclick="ui.switchTab('paste')">Paste text</button>
+        <button class="tab" onclick="ui.switchTab('upload')">Upload photo</button>
+        <button class="tab" onclick="ui.switchTab('ask')">Ask me</button>
+        <button class="tab" onclick="ui.switchTab('investigate')" style="background:linear-gradient(135deg,#003078,#0077cc);color:#FFD600;font-weight:700;border-radius:6px;">&#x1F916; Investigate</button>
+      </div>
+      <div class="tab-content active" id="tab-paste">
+        <textarea class="chat-textarea" id="pasteInput" placeholder="Paste a suspicious WhatsApp, email, or text here..."></textarea>
+      </div>
+      <div class="tab-content" id="tab-upload">
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+          <span class="upload-icon">📎</span>
+          <div class="upload-text">Upload screenshot or PDF</div>
+          <div class="upload-sub">PNG, JPG, WEBP — screenshots &nbsp;|&nbsp; PDF — forwarded scam emails</div>
         </div>
+        <div class="image-preview" id="imagePreviewArea">
+          <img id="imagePreview"/>
+          <p class="ocr-status" id="ocrStatus">Reading...</p>
+        </div>
+        <input type="file" id="fileInput" accept=".txt,.png,.jpg,.jpeg,.webp,.gif,.bmp,.pdf"/>
       </div>
-      <!-- Hidden file input -->
-      <input type="file" id="fileInput" accept=".txt,.png,.jpg,.jpeg,.webp,.gif,.bmp,.pdf" style="display:none"/>
-      <!-- File preview (shown after upload) -->
-      <div class="image-preview" id="imagePreviewArea" style="display:none">
-        <img id="imagePreview"/>
-        <p class="ocr-status" id="ocrStatus">Reading...</p>
+      <div class="tab-content" id="tab-ask">
+        <textarea class="chat-textarea" id="askInput" placeholder="Ask me anything — e.g. 'Is this a SIM swap?'"></textarea>
       </div>
-      <!-- Hidden legacy tab contents for JS compat -->
-      <div class="tab-content active" id="tab-paste" style="display:none"></div>
-      <div class="tab-content" id="tab-upload" style="display:none"></div>
-      <div class="tab-content" id="tab-ask" style="display:none"></div>
       <div class="tab-content" id="tab-investigate">
         <div style="padding:8px 0 4px;">
           <div style="font-size:12px;font-weight:700;color:#003078;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">&#x1F916; AI Agent — Deep Investigation</div>
@@ -1447,7 +1421,7 @@ class UIController {
   }
 
     updateCount(){
-    const v=document.getElementById('pasteInput')?.value||'';
+    const v=this.tab==='paste'?document.getElementById('pasteInput')?.value||'':document.getElementById('askInput')?.value||'';
     document.getElementById('charInfo').textContent=`${v.length.toLocaleString()} characters`;
   }
   switchTab(t){
@@ -1925,18 +1899,18 @@ Please:
     if(this.loading)return;
     // Route investigate tab to agent
     if(document.getElementById('tab-investigate')?.classList.contains('active')){this.runInvestigation();return;}
-    const content=document.getElementById('pasteInput')?.value?.trim();
-    // Detect if it's a question (ask mode) or a message to analyse
-    const isAsk=content && content.trim().endsWith('?');
+    const isAsk=this.tab==='ask';
+    const content=isAsk?document.getElementById('askInput')?.value?.trim():document.getElementById('pasteInput')?.value?.trim();
     if(!skip){
-      if(!content){this.showError('Please paste a message or type a question first');return;}
+      if(!content){this.showError(isAsk?'Please type a question first':'Please paste a message first');return;}
       if(!isAsk&&content.length<30){this.showError('That looks too short — paste more of the conversation');return;}
       if(!isAsk&&/def |import |class |function |const |var |let |<html/.test(content.slice(0,200))){this.showError('That looks like code, not a chat. Please paste a real conversation.');return;}
     }
     this._lastAnalysedText = content ? content.slice(0,120) : 'Suspicious message';
     this.addUserMsg(content);
     if(typeof trackEvent!=='undefined')trackEvent('scan_submitted',isAsk?'ask':'paste',content.slice(0,30));
-    document.getElementById('pasteInput').value='';
+    if(isAsk)document.getElementById('askInput').value='';
+    else document.getElementById('pasteInput').value='';
     this.updateCount();this.setLoading(true);
     try{
       if(isAsk){
