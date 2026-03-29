@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 40'%3E%3Cpath d='M18 2L4 8v12c0 10 6.5 17.5 14 19 7.5-1.5 14-9 14-19V8L18 2z' fill='%23003078'/%3E%3Cpath d='M18 6L7 11v9.5c0 8 5 14 11 15.5 6-1.5 11-7.5 11-15.5V11L18 6z' fill='%23FFD600'/%3E%3Cpath d='M18 10L9 14v7c0 6 4 11 9 12.5 5-1.5 9-6.5 9-12.5v-7L18 10z' fill='%23003078'/%3E%3Cpath d='M13 21l3.5 3.5 7-7' stroke='%23FFD600' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
@@ -25,7 +25,11 @@
   <meta name="twitter:title" content="ScamShield UK — Free AI Scam Detector">
   <meta name="twitter:description" content="Paste any suspicious message and get an instant intelligence report. Free forever. No account needed. Protecting UK families from scams.">
   <meta name="twitter:image" content="https://scamshield.org.uk/og-image.png">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     /* ── BRAND TOKENS ── */
     :root {
@@ -52,59 +56,12 @@
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
     html, body {
-      height: 100%;
       font-family: 'DM Sans', sans-serif;
       font-size: 16px;
-      color: var(--black);
-      background: var(--grey5);
-      overflow: hidden;
+      /* background + color handled by styles.css dark theme */
     }
 
-    /* ════════════════════════════
-       TOPBAR — fixed, single row
-    ════════════════════════════ */
     /* ── Premium HD upgrades ── */
-    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-    .topbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 52px;
-      background: var(--blue-dk);
-      border-bottom: 3px solid var(--yellow);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      z-index: 50;
-      gap: 8px;
-    }
-
-    .brand { display:flex; align-items:center; gap:10px; min-width:0; }
-    .brand-icon { width:30px; height:30px; flex-shrink:0; }
-    .brand-name {
-      font-size: 18px; font-weight:700;
-      color: var(--white); white-space:nowrap;
-      line-height:1;
-    }
-    .brand-name em { color:var(--yellow); font-style:normal; }
-    .brand-uk { font-size:10px; opacity:.6; font-weight:400; margin-left:3px; }
-    .brand-tag { display:none; } /* hidden on mobile */
-
-    .topbar-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-
-    .engine-badge {
-      display:flex; align-items:center; gap:5px;
-      background:transparent;
-      border:1px solid rgba(255,255,255,.05);
-      border-radius:var(--radius);
-      padding:3px 8px;
-      font-size:10px; font-weight:600;
-      color:rgba(255,255,255,.1); white-space:nowrap;
-    }
-    .engine-dot {
-      width:5px; height:5px;
-      background:rgba(255,255,255,.1); border-radius:50%;
-    }
     @keyframes appTipGlow {
       0%,100% { background:rgba(255,255,255,.07); box-shadow:0 0 0 0 rgba(255,214,0,0); }
       50% { background:rgba(255,214,0,.1); box-shadow:0 0 8px 2px rgba(255,214,0,.2); }
@@ -137,14 +94,18 @@
     .name-label { font-size:10px; color:rgba(255,255,255,.5); font-weight:500; }
 
     /* ════════════════════════════
-       APP SHELL — below topbar
+       APP SHELL — inline in SPA
     ════════════════════════════ */
     .app {
-      position: fixed;
-      top: 52px; left:0; right:0; bottom:0;
+      position: relative;
+      width: 100%;
+      height: clamp(560px, 82vh, 720px);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
     }
 
     /* ════════════════════════════
@@ -869,31 +830,47 @@
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="brand">
-    <svg class="brand-icon" viewBox="0 0 36 40" fill="none">
+<a class="skip-link" href="#checker">Skip to Scam Checker</a>
+
+<!-- ══════════════ SHARED HEADER ══════════════ -->
+<header class="site-header" role="banner">
+  <a href="#home" class="site-logo" aria-label="ScamShield UK — Home">
+    <svg viewBox="0 0 36 40" fill="none" aria-hidden="true">
       <path d="M18 2L3 8v12c0 9.9 6.4 19.1 15 21.9C26.6 39.1 33 29.9 33 20V8L18 2z" fill="#ffdd00"/>
       <path d="M18 5L5.5 10.5V20c0 8.5 5.5 16.4 12.5 18.8C25 36.4 30.5 28.5 30.5 20v-9.5L18 5z" fill="#003078"/>
       <path d="M12 20l4 4 8-8" stroke="#ffdd00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <div>
-      <h1 class="brand-name" style="margin:0;font-size:inherit;">Scam<em>Shield</em><span class="brand-uk" style="opacity:1;font-size:11px;font-weight:700;color:#FFD600;">.org.uk</span></h1>
-      <div class="brand-tag">Your personal scam detector</div>
-    </div>
-  </div>
-  <div class="topbar-right">
+    <span class="site-logo-text">Scam<em>Shield</em><span class="site-logo-tld">.org.uk</span></span>
+  </a>
 
-    <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;cursor:default;" title="Your messages are analysed in real time and never stored.">
-      <span style="font-size:12px;">🔒</span>
-      <div style="line-height:1.2;">
-        <div style="font-size:10px;font-weight:700;color:#FFD600;">Your chats are never saved</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.55);">100% private · no account needed</div>
-      </div>
-    </div>
-    <input type="hidden" id="userName" value="there"/>
-  </div>
+  <nav class="tool-tabs" aria-label="Tool navigation">
+    <button class="tool-tab active" data-view="check"><span class="tool-tab-icon">🔍</span> Check</button>
+    <button class="tool-tab" data-view="local"><span class="tool-tab-icon">📍</span> Local</button>
+    <button class="tool-tab" data-view="blog"><span class="tool-tab-icon">📝</span> Blog</button>
+    <button class="tool-tab" data-view="about"><span class="tool-tab-icon">ℹ️</span> About</button>
+  </nav>
+
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navOverlay">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ══════════════ FULL-SCREEN NAV OVERLAY ══════════════ -->
+<div class="nav-overlay" id="navOverlay" role="dialog" aria-label="Navigation menu">
+  <ul class="nav-overlay-links">
+    <li><button class="tool-tab" data-view="check" style="font-size:20px;font-weight:600;padding:18px 0;width:100%;background:none;border:none;color:var(--text-2);text-align:left;cursor:pointer;display:flex;align-items:center;gap:16px;font-family:inherit;"><span class="nav-icon">🔍</span> Scam Checker</button></li>
+    <li><button class="tool-tab" data-view="local" style="font-size:20px;font-weight:600;padding:18px 0;width:100%;background:none;border:none;color:var(--text-2);text-align:left;cursor:pointer;display:flex;align-items:center;gap:16px;font-family:inherit;"><span class="nav-icon">📍</span> Local Scams</button></li>
+    <li><button class="tool-tab" data-view="blog" style="font-size:20px;font-weight:600;padding:18px 0;width:100%;background:none;border:none;color:var(--text-2);text-align:left;cursor:pointer;display:flex;align-items:center;gap:16px;font-family:inherit;"><span class="nav-icon">📝</span> Blog</button></li>
+    <li><button class="tool-tab" data-view="about" style="font-size:20px;font-weight:600;padding:18px 0;width:100%;background:none;border:none;color:var(--text-2);text-align:left;cursor:pointer;display:flex;align-items:center;gap:16px;font-family:inherit;"><span class="nav-icon">ℹ️</span> About</button></li>
+  </ul>
+  <button class="nav-overlay-dm" data-dm-toggle aria-label="Toggle dark/light mode">
+    <span data-dm-icon>☀️</span>
+    <span data-dm-label>Light mode</span>
+  </button>
 </div>
+
+<!-- Hidden userName (referenced by existing chat JS) -->
+<input type="hidden" id="userName" value="there"/>
 
 <!-- Cookie Banner -->
 <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#003078;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -2px 12px rgba(0,0,0,.3);flex-wrap:wrap;">
@@ -907,8 +884,12 @@
   </div>
 </div>
 
-<!-- APP SHELL -->
-<div class="app" style="top:52px">
+<main class="tool-main" id="toolMain">
+
+<!-- VIEW: CHECK (default) -->
+<div class="tool-view active" id="view-check">
+<!-- APP SHELL (original, repositioned) -->
+<div class="app">
 
   <!-- CHAT PANEL -->
   <div class="chat-panel">
@@ -998,7 +979,6 @@
       <div class="input-footer">
         <div style="display:flex;align-items:center;gap:10px;">
           <span class="char-count" id="charInfo">0 characters</span>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZ2upZLI8mJT7FThfRpWtLUKKFt68SqfijxxoOFJpe3TlwRQ/viewform" target="_blank" rel="noopener" style="font-size:13px;font-weight:700;color:#FFD600;background:#003078;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;text-decoration:none;white-space:nowrap;box-shadow:0 2px 8px rgba(0,48,120,.25);transition:background .15s,transform .1s;" onmouseover="this.style.background='#002060';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#003078';this.style.transform='translateY(0)'">💬 Feedback</a>
         </div>
         <button class="send-btn" id="sendBtn" onclick="ui.handleSend()">Check it</button>
       </div>
@@ -1029,7 +1009,141 @@
     </div>
   </div>
 
+</div><!-- /.app -->
 </div>
+
+<!-- VIEW: LOCAL SCAMS -->
+<div class="tool-view" id="view-local">
+  <div class="view-scroll">
+    <div class="local-card">
+      <div class="local-header">
+        <p class="tag-pill" style="margin-bottom:12px;">Local Intelligence</p>
+        <h2 class="section-title">Scams in <span>Your Area</span></h2>
+        <p class="section-subtitle" style="margin-bottom:20px;">Enter your postcode to get your local safety score, crime data, and official reporting contacts.</p>
+      </div>
+      <div class="postcode-card glass-card">
+        <div class="postcode-input-row">
+          <input
+            id="sectionPostcodeInput"
+            class="postcode-input"
+            type="text"
+            placeholder="Enter postcode e.g. SW1A 1AA"
+            maxlength="8"
+            autocomplete="postal-code"
+            aria-label="Enter UK postcode"
+            oninput="this.value=this.value.toUpperCase()"
+          />
+          <button id="sectionPostcodeBtn" class="btn-primary" onclick="window.runPostcodeSearch()" style="padding:14px 22px;">Search</button>
+        </div>
+        <div id="postcodeResults" class="postcode-results" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: BLOG -->
+<div class="tool-view" id="view-blog">
+  <div class="view-scroll">
+    <p class="tag-pill" style="margin-bottom:12px;">Scam Education</p>
+    <h2 class="section-title">Scam <span>Articles</span></h2>
+    <p class="section-subtitle">Stay informed about fraud tactics targeting UK residents.</p>
+    <div class="blog-view-grid">
+      <a href="/blog/hmrc-scam-calls-texts.html" class="blog-preview-card glass-card">
+        <div class="blog-card-top"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta"><span class="tag-pill tag-pill--warn">High Risk</span><span class="blog-card-time">5 min read</span></div>
+          <h3 class="blog-card-title">HMRC Scam Calls &amp; Texts: How to Spot Fake Tax Messages</h3>
+          <p class="blog-card-excerpt">Fraudsters impersonate HMRC to steal personal and financial information. Learn the red flags every UK taxpayer needs to know.</p>
+          <span class="blog-card-link">Read article</span>
+        </div>
+      </a>
+      <a href="/blog/whatsapp-scams-uk.html" class="blog-preview-card glass-card">
+        <div class="blog-card-top"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta"><span class="tag-pill tag-pill--warn">Trending</span><span class="blog-card-time">4 min read</span></div>
+          <h3 class="blog-card-title">WhatsApp Scams in the UK: OTP Hijacking &amp; Family Scams</h3>
+          <p class="blog-card-excerpt">WhatsApp scams are rising sharply across the UK. This guide covers the most common tactics and how to protect yourself.</p>
+          <span class="blog-card-link">Read article</span>
+        </div>
+      </a>
+      <a href="/blog/romance-scams-uk.html" class="blog-preview-card glass-card">
+        <div class="blog-card-top"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta"><span class="tag-pill">Romance</span><span class="blog-card-time">6 min read</span></div>
+          <h3 class="blog-card-title">Romance Scams UK: How Fraudsters Build Trust Then Steal</h3>
+          <p class="blog-card-excerpt">Romance scammers spend weeks building emotional connections before making their move. Here is how to spot a fake profile.</p>
+          <span class="blog-card-link">Read article</span>
+        </div>
+      </a>
+      <a href="/blog/pig-butchering-scams-uk.html" class="blog-preview-card glass-card">
+        <div class="blog-card-top"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta"><span class="tag-pill tag-pill--warn">High Risk</span><span class="blog-card-time">7 min read</span></div>
+          <h3 class="blog-card-title">Pig Butchering Scams: The Investment Fraud Costing UK Victims Thousands</h3>
+          <p class="blog-card-excerpt">Scammers build fake relationships then lure victims into fraudulent crypto platforms. Everything you need to know.</p>
+          <span class="blog-card-link">Read article</span>
+        </div>
+      </a>
+      <a href="/blog/how-to-report-scam-uk.html" class="blog-preview-card glass-card">
+        <div class="blog-card-top"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta"><span class="tag-pill">Guide</span><span class="blog-card-time">4 min read</span></div>
+          <h3 class="blog-card-title">How to Report a Scam in the UK: Action Fraud, FCA &amp; More</h3>
+          <p class="blog-card-excerpt">A complete guide to reporting fraud to the right UK authority, from Action Fraud to the FCA, Ofcom, and Citizens Advice.</p>
+          <span class="blog-card-link">Read article</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: ABOUT -->
+<div class="tool-view" id="view-about">
+  <div class="view-scroll">
+    <div class="about-view-grid">
+      <div>
+        <p class="tag-pill" style="margin-bottom:16px;">Our Mission</p>
+        <h2 class="section-title">Protecting the UK from <span>Scams &amp; Fraud</span></h2>
+        <p style="color:var(--text-2);font-size:15px;line-height:1.7;margin:16px 0;">ScamShield UK is a free, independent tool built to help ordinary people spot, avoid, and report fraud. We believe scam protection should be available to everyone.</p>
+        <ul class="about-trust-list">
+          <li><span class="about-trust-icon">&#10003;</span> No personal data stored &mdash; ever</li>
+          <li><span class="about-trust-icon">&#10003;</span> No account, no login, no subscription</li>
+          <li><span class="about-trust-icon">&#10003;</span> Directs users to official UK reporting channels</li>
+          <li><span class="about-trust-icon">&#10003;</span> Completely free, always</li>
+        </ul>
+        <div class="about-disclaimer" role="note">
+          <strong>Important:</strong> ScamShield UK (scamshield.org.uk) is an <strong>independent community tool</strong>. It is not a UK government website and is not affiliated with the Singapore Government ScamShield app. We do not collect passwords, bank details, or personal data. Always report fraud to <a href="https://www.actionfraud.police.uk" target="_blank" rel="noopener" style="color:var(--accent);">Action Fraud</a>.
+        </div>
+        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="/about.html" class="btn-outline" style="font-size:14px;padding:10px 20px;">Full About Page</a>
+          <a href="https://www.actionfraud.police.uk" target="_blank" rel="noopener" class="btn-primary" style="font-size:14px;padding:10px 20px;">Report Fraud</a>
+        </div>
+      </div>
+      <div>
+        <div class="glass-card" style="padding:24px;margin-bottom:20px;">
+          <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-3);margin-bottom:16px;">Key Stats</p>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div><div style="font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">50,000+</div><div style="font-size:13px;color:var(--text-3);">Scam checks performed</div></div>
+            <div><div style="font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">50+</div><div style="font-size:13px;color:var(--text-3);">Fraud patterns detected</div></div>
+            <div><div style="font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">100%</div><div style="font-size:13px;color:var(--text-3);">Free, forever</div></div>
+          </div>
+        </div>
+        <div class="glass-card" style="padding:24px;">
+          <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-3);margin-bottom:14px;">Official Contacts</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="https://www.actionfraud.police.uk" target="_blank" rel="noopener" class="pc-contact-link"><span class="pc-contact-icon">&#128737;</span><div><div class="pc-contact-name">Action Fraud</div><div class="pc-contact-desc">0300 123 2040</div></div></a>
+            <a href="https://www.fca.org.uk" target="_blank" rel="noopener" class="pc-contact-link"><span class="pc-contact-icon">&#128188;</span><div><div class="pc-contact-name">FCA</div><div class="pc-contact-desc">Financial scams</div></div></a>
+            <a href="https://www.citizensadvice.org.uk" target="_blank" rel="noopener" class="pc-contact-link"><span class="pc-contact-icon">&#128222;</span><div><div class="pc-contact-name">Citizens Advice</div><div class="pc-contact-desc">Free guidance</div></div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main><!-- /.tool-main -->
+
+
 
 <!-- Sheet overlay -->
 <div class="sheet-overlay" id="sheetOverlay" onclick="ui.closeSheet()"></div>
@@ -1058,6 +1172,66 @@
   </div>
   <div class="learn-body" id="learnBody">
     <!-- Home grid — injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════ AREA SAFETY — UNLOCK MODAL (YouTube Subscribe) ══════════ -->
+<div id="asSafetyOverlay" onclick="closeAreaSafety()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;"></div>
+<div id="asSafetyModal" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,400px);background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.22);z-index:301;overflow:hidden;">
+  <!-- Header -->
+  <div style="background:#003078;padding:18px 20px 14px;position:relative;">
+    <div style="font-size:22px;margin-bottom:4px;">🔒</div>
+    <div style="font-size:16px;font-weight:700;color:#FFD600;">Unlock Area Safety</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:3px;">Subscribe to our YouTube channel to unlock your free local safety report</div>
+    <button onclick="closeAreaSafety()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+  </div>
+  <!-- YouTube Subscribe -->
+  <div style="padding:20px;">
+    <!-- Step 1: Subscribe -->
+    <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e0e0e0;border-radius:10px;margin-bottom:14px;background:#fafafa;">
+      <div style="width:44px;height:44px;background:#ff0000;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:#fff;">&#9654;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:#0b0c0c;">Step 1: Subscribe on YouTube</div>
+        <div style="font-size:12px;color:#505a5f;margin-top:2px;">@ScamShieldUK</div>
+      </div>
+    </div>
+    <!-- Embedded YouTube Subscribe Button -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <div class="g-ytsubscribe" data-channelid="UCVUeFDu6fx-cBL-tCDJQqmA" data-layout="full" data-count="default"></div>
+    </div>
+    <!-- Step 2: Verify -->
+    <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e0e0e0;border-radius:10px;margin-bottom:14px;background:#fafafa;">
+      <div style="width:44px;height:44px;background:#003078;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#FFD600;">&#10003;</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:#0b0c0c;">Step 2: Verify your subscription</div>
+        <div style="font-size:12px;color:#505a5f;margin-top:2px;">Sign in with Google to confirm</div>
+      </div>
+    </div>
+    <!-- Verify button -->
+    <button id="asVerifyBtn" onclick="verifySubscription()" style="width:100%;padding:13px;background:#003078;color:#FFD600;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;">&#x1F513; Verify &amp; Unlock</button>
+    <!-- Status message -->
+    <div id="asStatus" style="margin-top:12px;font-size:13px;text-align:center;min-height:20px;"></div>
+  </div>
+</div>
+
+<!-- ══════════ AREA SAFETY — POSTCODE MODAL ══════════ -->
+<div id="asPostcodeOverlay" onclick="closePostcodeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;"></div>
+<div id="asPostcodeModal" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,460px);max-height:85dvh;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.22);z-index:301;overflow:hidden;flex-direction:column;">
+  <div style="background:#003078;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+    <div>
+      <div style="font-size:15px;font-weight:700;color:#FFD600;">🔓 Area Safety Report</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px;">Real crime data · Your local contacts</div>
+    </div>
+    <button onclick="closePostcodeModal()" style="background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;">&times;</button>
+  </div>
+  <div style="padding:16px 20px;border-bottom:1px solid #eaecee;flex-shrink:0;">
+    <div style="display:flex;gap:8px;">
+      <input id="asPostcodeInput" type="text" placeholder="Enter UK postcode e.g. SW1A 1AA" maxlength="8" style="flex:1;padding:10px 14px;border:2px solid #003078;border-radius:8px;font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:1px;font-family:inherit;outline:none;" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')runAreaSafety()"/>
+      <button onclick="runAreaSafety()" id="asSearchBtn" style="padding:10px 20px;background:#003078;color:#FFD600;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;">Search</button>
+    </div>
+  </div>
+  <div id="asReportBody" style="flex:1;overflow-y:auto;padding:16px 20px;">
+    <div style="text-align:center;padding:32px 0;color:#505a5f;font-size:14px;">Enter your postcode above to get your local safety report.</div>
   </div>
 </div>
 
@@ -2628,20 +2802,385 @@ window.ui=new UIController({backendUrl:'https://scam-1xfe.onrender.com'});
 setTimeout(initLocalAlerts, 2000);
 document.getElementById('askInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ui.handleSend();}});
 document.getElementById('pasteInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ui.handleSend();}});
+
+/* ══════════ AREA SAFETY ══════════ */
+const AS_KEY = 'ss_area_safety_unlocked';
+const YT_CHANNEL_ID = 'UCVUeFDu6fx-cBL-tCDJQqmA';
+const GOOG_CLIENT_ID = '223918676853-mogv4hh6rksu97vmsqouv7rhkgr86tdg.apps.googleusercontent.com';
+
+function asIsUnlocked() {
+  try { return localStorage.getItem(AS_KEY)==='1'; } catch(e){ return false; }
+}
+
+function openAreaSafety() {
+  if(asIsUnlocked()) {
+    showPostcodeModal();
+    return;
+  }
+  // Load YouTube subscribe button widget if not already loaded
+  if(!window._ytPlatformLoaded) {
+    const s = document.createElement('script');
+    s.src = 'https://apis.google.com/js/platform.js';
+    s.onload = () => { window._ytPlatformLoaded = true; if(window.gapi) gapi.ytsubscribe.go(); };
+    document.head.appendChild(s);
+  } else if(window.gapi && gapi.ytsubscribe) {
+    gapi.ytsubscribe.go();
+  }
+  document.getElementById('asSafetyOverlay').style.display='block';
+  document.getElementById('asSafetyModal').style.display='block';
+}
+function closeAreaSafety() {
+  document.getElementById('asSafetyOverlay').style.display='none';
+  document.getElementById('asSafetyModal').style.display='none';
+}
+
+// YouTube subscription verification via Google OAuth + YouTube Data API v3
+async function verifySubscription() {
+  const btn = document.getElementById('asVerifyBtn');
+  const status = document.getElementById('asStatus');
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+  status.innerHTML = '<span style="color:#505a5f;">Signing in with Google...</span>';
+
+  try {
+    const token = await new Promise((resolve, reject) => {
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: GOOG_CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/youtube.readonly',
+        callback: (resp) => {
+          if(resp.error) reject(new Error(resp.error));
+          else resolve(resp.access_token);
+        },
+        error_callback: (err) => reject(new Error(err.type || 'Auth cancelled'))
+      });
+      client.requestAccessToken();
+    });
+
+    status.innerHTML = '<span style="color:#505a5f;">Checking subscription...</span>';
+
+    // Check subscriptions (paginate if needed)
+    let found = false;
+    let pageToken = '';
+    for(let i=0; i<5 && !found; i++) {
+      const url = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50${pageToken?'&pageToken='+pageToken:''}`;
+      const resp = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
+      if(!resp.ok) {
+        const err = await resp.json().catch(()=>({}));
+        throw new Error(err.error?.message || 'API error');
+      }
+      const data = await resp.json();
+      for(const item of (data.items||[])) {
+        if(item.snippet?.resourceId?.channelId === YT_CHANNEL_ID) {
+          found = true;
+          break;
+        }
+      }
+      pageToken = data.nextPageToken || '';
+      if(!pageToken) break;
+    }
+
+    if(found) {
+      // Unlock!
+      try { localStorage.setItem(AS_KEY, '1'); } catch(e){}
+      const fab = document.getElementById('areaSafetyBtn');
+      if(fab) fab.innerHTML = '&#x1F513;';
+      status.innerHTML = '<span style="color:#00703c;font-weight:700;">&#x2705; Subscription verified! Unlocking...</span>';
+      setTimeout(() => {
+        closeAreaSafety();
+        showPostcodeModal();
+      }, 800);
+    } else {
+      status.innerHTML = '<span style="color:#d4351c;font-weight:600;">Subscription not found. Please subscribe to @ScamShieldUK first, then try again.</span>';
+      btn.disabled = false;
+      btn.textContent = '\u{1F513} Verify & Unlock';
+    }
+  } catch(err) {
+    const msg = err.message || 'Verification failed';
+    if(msg.includes('cancelled') || msg.includes('popup_closed')) {
+      status.innerHTML = '<span style="color:#505a5f;">Sign-in cancelled. Click verify to try again.</span>';
+    } else {
+      status.innerHTML = '<span style="color:#d4351c;">' + msg + '</span>';
+    }
+    btn.disabled = false;
+    btn.textContent = '\u{1F513} Verify & Unlock';
+  }
+}
+
+function showPostcodeModal() {
+  document.getElementById('asPostcodeOverlay').style.display='block';
+  document.getElementById('asPostcodeModal').style.display='flex';
+  setTimeout(()=>document.getElementById('asPostcodeInput')?.focus(),300);
+}
+function closePostcodeModal() {
+  document.getElementById('asPostcodeOverlay').style.display='none';
+  document.getElementById('asPostcodeModal').style.display='none';
+}
+
+// Age-group crime category mapping
+const YOUTH_CATS = ['anti-social-behaviour','shoplifting','criminal-damage-arson','public-order','other-theft','bicycle-theft'];
+const ADULT_CATS = ['burglary','vehicle-crime','robbery','drugs','possession-of-weapons','violent-crime','theft-from-the-person','other-crime'];
+
+function classifyCrime(cat) {
+  const c = (cat||'').toLowerCase();
+  if(YOUTH_CATS.includes(c)) return 'youth';
+  if(ADULT_CATS.includes(c)) return 'adult';
+  return 'general';
+}
+
+function buildCrimeBars(grouped, total, label) {
+  const top = Object.entries(grouped).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  if(!top.length) return '';
+  return `<div style="margin-bottom:14px;">
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">${label}</div>
+    ${top.map(([cat,cnt],i)=>{
+      const pct = total>0 ? Math.round((cnt/total)*100) : 0;
+      const barColor = i===0?'#d4351c':i===1?'#f47738':'#1d70b8';
+      return `<div style="margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px;">
+          <span style="text-transform:capitalize;font-weight:600;">${cat.replace(/-/g,' ')}</span>
+          <span style="color:#505a5f;">${cnt}</span>
+        </div>
+        <div style="height:5px;background:#f3f2f1;border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${barColor};border-radius:3px;"></div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+async function fetchCrimesForDate(lat, lng, dateStr) {
+  try {
+    const url = dateStr
+      ? `https://data.police.uk/api/crimes-street/all-crime?lat=${lat}&lng=${lng}&date=${dateStr}`
+      : `https://data.police.uk/api/crimes-street/all-crime?lat=${lat}&lng=${lng}`;
+    const r = await fetch(url);
+    if(r.ok) return await r.json();
+  } catch(e){}
+  return null;
+}
+
+async function runAreaSafety() {
+  const input = document.getElementById('asPostcodeInput');
+  const body = document.getElementById('asReportBody');
+  const btn = document.getElementById('asSearchBtn');
+  const postcode = (input.value||'').trim().toUpperCase().replace(/\s/g,'');
+
+  if(!/^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(postcode)) {
+    body.innerHTML='<div style="color:#d4351c;font-size:13px;padding:12px;background:#fde8e4;border-radius:8px;">Please enter a valid UK postcode (e.g. SW1A1AA)</div>';
+    return;
+  }
+
+  btn.disabled=true; btn.textContent='Searching...';
+  body.innerHTML='<div style="text-align:center;padding:40px 0;"><div style="width:28px;height:28px;border:3px solid #eaecee;border-top-color:#003078;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;"></div><div style="font-size:13px;color:#505a5f;">Loading your area safety report...</div></div>';
+
+  try {
+    // 1. Postcode → lat/lng
+    const pcRes = await fetch('https://api.postcodes.io/postcodes/'+postcode);
+    const pcData = await pcRes.json();
+    if(pcData.status!==200||!pcData.result) throw new Error('Invalid postcode');
+    const {latitude:lat, longitude:lng, admin_district:district, parliamentary_constituency:constituency} = pcData.result;
+    const areaName = district || constituency || postcode;
+
+    // 2. Fetch current + 6-month-old crime data in parallel
+    const now = new Date();
+    const sixAgo = new Date(now.getFullYear(), now.getMonth()-6, 1);
+    const recentDate = `${now.getFullYear()}-${String(now.getMonth()).padStart(2,'0')}`;
+    const oldDate = `${sixAgo.getFullYear()}-${String(sixAgo.getMonth()+1).padStart(2,'0')}`;
+
+    const [crimes, oldCrimes] = await Promise.all([
+      fetchCrimesForDate(lat, lng, null),
+      fetchCrimesForDate(lat, lng, oldDate)
+    ]);
+
+    const crimeList = crimes || [];
+    const oldCrimeList = oldCrimes || [];
+    const crimeError = !crimes;
+
+    // 3. Local police force
+    let forceName='', forceUrl='';
+    try {
+      const nhRes = await fetch(`https://data.police.uk/api/locate-neighbourhood?q=${lat},${lng}`);
+      if(nhRes.ok){
+        const nh = await nhRes.json();
+        const fRes = await fetch(`https://data.police.uk/api/forces/${nh.force}`);
+        if(fRes.ok){const f=await fRes.json();forceName=f.name;forceUrl=f.url||'';}
+      }
+    } catch(e){}
+
+    // Calculate safety score
+    const total = crimeList.length;
+    let score = 100;
+    if(total>200) score=20;
+    else if(total>150) score=35;
+    else if(total>100) score=50;
+    else if(total>60) score=65;
+    else if(total>30) score=78;
+    else if(total>10) score=88;
+    else score=95;
+
+    const scoreColor = score>=80?'#00703c':score>=60?'#f47738':score>=40?'#d4351c':'#6b0000';
+    const scoreLabel = score>=80?'Generally Safe':score>=60?'Moderate Risk':score>=40?'High Risk':'Very High Risk';
+
+    // Age-group breakdown
+    const youthGrouped={}, adultGrouped={}, allGrouped={};
+    let youthTotal=0, adultTotal=0;
+    crimeList.forEach(c=>{
+      const cat = c.category||'other';
+      const cls = classifyCrime(cat);
+      const label = cat.replace(/-/g,' ');
+      allGrouped[label]=(allGrouped[label]||0)+1;
+      if(cls==='youth') { youthGrouped[label]=(youthGrouped[label]||0)+1; youthTotal++; }
+      else if(cls==='adult') { adultGrouped[label]=(adultGrouped[label]||0)+1; adultTotal++; }
+    });
+    const top5 = Object.entries(allGrouped).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+    // Historical comparison
+    const oldTotal = oldCrimeList.length;
+    let trendPct = 0, trendLabel = '', trendIcon = '';
+    if(oldTotal > 0) {
+      trendPct = Math.round(((total - oldTotal) / oldTotal) * 100);
+      if(trendPct > 5) { trendLabel = `Increased by ${trendPct}%`; trendIcon = '&#x1F534;'; }
+      else if(trendPct < -5) { trendLabel = `Decreased by ${Math.abs(trendPct)}%`; trendIcon = '&#x1F7E2;'; }
+      else { trendLabel = 'Stable (no significant change)'; trendIcon = '&#x1F7E1;'; }
+    }
+
+    // Regional scam intel
+    let scamIntel='';
+    if(typeof getRegion==='function'){
+      const region=getRegion(lat,lng);
+      if(typeof REGIONAL_SCAMS!=='undefined'&&REGIONAL_SCAMS[region]){
+        const rs=REGIONAL_SCAMS[region];
+        scamIntel=`<div style="margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">Active Scams in Your Region</div>
+          ${rs.slice(0,3).map(s=>`<div style="display:flex;gap:8px;padding:7px 10px;background:#fff3cd;border-radius:6px;margin-bottom:5px;font-size:12px;"><span>&#x26A0;&#xFE0F;</span><span>${s}</span></div>`).join('')}
+        </div>`;
+      }
+    }
+
+    // Action plan
+    const actions = score>=80
+      ? ['Stay alert to unsolicited calls claiming to be HMRC or your bank','Forward scam texts to 7726','Enable two-step verification on WhatsApp and email']
+      : score>=60
+      ? ['Be extra cautious of door-to-door salespeople','Never transfer money based on a phone call alone','Report suspicious activity to your local police online']
+      : ['Consider signing up for your local Neighbourhood Watch','Report all scam attempts to Action Fraud: 0300 123 2040','Check the FCA register before any investment'];
+
+    // Moving to this area? summary
+    const youthLevel = youthTotal > 30 ? 'High' : youthTotal > 10 ? 'Moderate' : 'Low';
+    const adultLevel = adultTotal > 40 ? 'High' : adultTotal > 15 ? 'Moderate' : 'Low';
+    const youthColor = youthLevel==='High'?'#d4351c':youthLevel==='Moderate'?'#f47738':'#00703c';
+    const adultColor = adultLevel==='High'?'#d4351c':adultLevel==='Moderate'?'#f47738':'#00703c';
+
+    body.innerHTML=`
+      <!-- Score -->
+      <div style="text-align:center;padding:16px 0 12px;border-bottom:1px solid #eaecee;margin-bottom:14px;">
+        <div style="font-size:48px;font-weight:700;color:${scoreColor};font-family:'DM Mono',monospace;line-height:1;">${score}</div>
+        <div style="font-size:11px;color:#505a5f;margin:2px 0 6px;">Safety Score out of 100</div>
+        <div style="display:inline-block;padding:4px 14px;background:${scoreColor};color:#fff;border-radius:20px;font-size:12px;font-weight:700;">${scoreLabel}</div>
+        <div style="font-size:11px;color:#505a5f;margin-top:8px;">Based on ${total} reported incidents near <strong>${areaName}</strong></div>
+      </div>
+
+      <!-- 6-Month Trend -->
+      ${oldTotal>0?`<div style="padding:10px 12px;background:#f0f4f9;border-radius:8px;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">${trendIcon}</span>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#0b0c0c;">6-Month Trend: ${trendLabel}</div>
+          <div style="font-size:11px;color:#505a5f;">Now: ${total} incidents &middot; 6 months ago: ${oldTotal} incidents</div>
+        </div>
+      </div>`:''}
+
+      <!-- Moving to this area? -->
+      <div style="padding:12px;background:linear-gradient(135deg,#003078,#004eb8);border-radius:10px;margin-bottom:14px;color:#fff;">
+        <div style="font-size:13px;font-weight:700;color:#FFD600;margin-bottom:8px;">&#x1F3E0; Moving to this area?</div>
+        <div style="display:flex;gap:8px;margin-bottom:6px;">
+          <div style="flex:1;padding:8px;background:rgba(255,255,255,.12);border-radius:6px;text-align:center;">
+            <div style="font-size:10px;opacity:.8;">Youth Crime</div>
+            <div style="font-size:14px;font-weight:700;color:${youthColor==='#00703c'?'#2ed573':youthColor==='#f47738'?'#ffbe76':'#ff6b6b'};">${youthLevel}</div>
+            <div style="font-size:10px;opacity:.7;">${youthTotal} reports</div>
+          </div>
+          <div style="flex:1;padding:8px;background:rgba(255,255,255,.12);border-radius:6px;text-align:center;">
+            <div style="font-size:10px;opacity:.8;">Adult Crime</div>
+            <div style="font-size:14px;font-weight:700;color:${adultColor==='#00703c'?'#2ed573':adultColor==='#f47738'?'#ffbe76':'#ff6b6b'};">${adultLevel}</div>
+            <div style="font-size:10px;opacity:.7;">${adultTotal} reports</div>
+          </div>
+          <div style="flex:1;padding:8px;background:rgba(255,255,255,.12);border-radius:6px;text-align:center;">
+            <div style="font-size:10px;opacity:.8;">Trend</div>
+            <div style="font-size:14px;font-weight:700;">${trendPct>5?'&#x2191;':trendPct<-5?'&#x2193;':'&#x2194;'}</div>
+            <div style="font-size:10px;opacity:.7;">${oldTotal>0?(trendPct>0?'+':'')+trendPct+'%':'N/A'}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Under 18 Crime Profile -->
+      ${buildCrimeBars(youthGrouped, youthTotal, '&#x1F466; Under 18 — Youth Crime Profile')}
+
+      <!-- Over 18 Crime Profile -->
+      ${buildCrimeBars(adultGrouped, adultTotal, '&#x1F9D1; Over 18 — Adult Crime Profile')}
+
+      <!-- Top crimes overall -->
+      ${top5.length?`<div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">All Crime Categories</div>
+        ${top5.map(([cat,cnt],i)=>{
+          const pct=Math.round((cnt/total)*100);
+          const barColor=i===0?'#d4351c':i===1?'#f47738':'#1d70b8';
+          return `<div style="margin-bottom:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+              <span style="text-transform:capitalize;font-weight:600;">${cat}</span>
+              <span style="color:#505a5f;">${cnt} reports</span>
+            </div>
+            <div style="height:6px;background:#f3f2f1;border-radius:3px;overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:${barColor};border-radius:3px;"></div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`:crimeError?'<div style="font-size:12px;color:#505a5f;padding:8px 0;">Crime data temporarily unavailable.</div>':''}
+
+      <!-- Scam intel -->
+      ${scamIntel}
+
+      <!-- Action plan -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">Your Action Plan</div>
+        ${actions.map((a,i)=>`<div style="display:flex;gap:10px;padding:8px 10px;background:#f8f8f8;border-radius:6px;margin-bottom:5px;font-size:12px;"><span style="width:20px;height:20px;background:#003078;color:#FFD600;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0;">${i+1}</span><span>${a}</span></div>`).join('')}
+      </div>
+
+      <!-- Local contacts -->
+      <div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">Local Reporting Contacts</div>
+        ${forceName?`<div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #eaecee;border-radius:8px;margin-bottom:6px;">
+          <span style="font-size:20px;">&#x1F46E;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;">${forceName}</div><div style="font-size:11px;color:#505a5f;">Your local police force</div></div>
+          ${forceUrl?`<a href="${forceUrl}" target="_blank" rel="noopener" style="font-size:11px;font-weight:700;color:#1d70b8;">Visit &#x2192;</a>`:''}
+        </div>`:''}
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #eaecee;border-radius:8px;margin-bottom:6px;">
+          <span style="font-size:20px;">&#x1F6A8;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Action Fraud</div><div style="font-size:11px;color:#505a5f;">0300 123 2040</div></div>
+          <a href="https://www.actionfraud.police.uk/reporting-fraud" target="_blank" rel="noopener" style="font-size:11px;font-weight:700;color:#1d70b8;">Report &#x2192;</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #eaecee;border-radius:8px;">
+          <span style="font-size:20px;">&#x1F4F1;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Scam Texts</div><div style="font-size:11px;color:#505a5f;">Forward to 7726 (free)</div></div>
+        </div>
+      </div>
+    `;
+  } catch(err) {
+    body.innerHTML='<div style="color:#d4351c;font-size:13px;padding:12px;background:#fde8e4;border-radius:8px;">Could not load safety data. Please check your postcode and try again.</div>';
+  }
+  btn.disabled=false; btn.textContent='Search';
+}
+
+// Init — restore unlocked state on load
+(function(){
+  if(asIsUnlocked()){
+    const fab=document.getElementById('areaSafetyBtn');
+    if(fab) fab.innerHTML='&#x1F513;';
+  }
+})();
 </script>
-  <!-- Feedback Footer -->
-  <!-- Clean footer — legal only -->
-  <div style="text-align:center;padding:10px 20px;background:#f8f9fa;border-top:1px solid #e9ecef;font-size:10px;color:#999;line-height:2;">
-    <a href="https://docs.google.com/document/d/ScamShield-Privacy" target="_blank" rel="noopener" style="color:#003078;font-weight:600;text-decoration:none;">Privacy Policy</a>
-    <span style="margin:0 6px;color:#ddd;">|</span>
-    <a href="https://docs.google.com/document/d/ScamShield-Terms" target="_blank" rel="noopener" style="color:#003078;font-weight:600;text-decoration:none;">Terms of Use</a>
-    <span style="margin:0 6px;color:#ddd;">|</span>
-    <span>© 2025 ScamShield UK · Free · No data stored</span>
-    <span style="margin:0 6px;color:#ddd;">|</span>
-    <span>Not affiliated with any government body</span>
-  </div>
 
+<!-- ══════════ FIXED BOTTOM-LEFT AREA SAFETY BUTTON ══════════ -->
+<button id="areaSafetyBtn" onclick="openAreaSafety()" class="as-fab" title="Area Safety Report">&#x1F512;</button>
 
+<script src="shared.js" defer></script>
 </body>
 </html>
       
