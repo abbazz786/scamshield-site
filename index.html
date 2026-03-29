@@ -1183,39 +1183,14 @@
 <!-- ══════════ AREA SAFETY — UNLOCK MODAL (YouTube Subscribe) ══════════ -->
 <div id="asSafetyOverlay" onclick="closeAreaSafety()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;"></div>
 <div id="asSafetyModal" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,400px);background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.22);z-index:301;overflow:hidden;">
-  <!-- Header -->
   <div style="background:#003078;padding:18px 20px 14px;position:relative;">
     <div style="font-size:22px;margin-bottom:4px;">🔒</div>
-    <div style="font-size:16px;font-weight:700;color:#FFD600;">Unlock Area Safety</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:3px;">Subscribe to our YouTube channel to unlock your free local safety report</div>
+    <div style="font-size:16px;font-weight:700;color:#FFD600;">Unlock Postcode Area Check</div>
     <button onclick="closeAreaSafety()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;line-height:1;">&times;</button>
   </div>
-  <!-- YouTube Subscribe -->
   <div style="padding:20px;">
-    <!-- Step 1: Subscribe -->
-    <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e0e0e0;border-radius:10px;margin-bottom:14px;background:#fafafa;">
-      <div style="width:44px;height:44px;background:#ff0000;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:#fff;">&#9654;</div>
-      <div style="flex:1;">
-        <div style="font-size:14px;font-weight:700;color:#0b0c0c;">Step 1: Subscribe on YouTube</div>
-        <div style="font-size:12px;color:#505a5f;margin-top:2px;">@ScamShieldUK</div>
-      </div>
-    </div>
-    <!-- Embedded YouTube Subscribe Button -->
-    <div style="text-align:center;margin-bottom:16px;">
-      <div class="g-ytsubscribe" data-channelid="UCVUeFDu6fx-cBL-tCDJQqmA" data-layout="full" data-count="default"></div>
-    </div>
-    <!-- Step 2: Verify -->
-    <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e0e0e0;border-radius:10px;margin-bottom:14px;background:#fafafa;">
-      <div style="width:44px;height:44px;background:#003078;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#FFD600;">&#10003;</div>
-      <div style="flex:1;">
-        <div style="font-size:14px;font-weight:700;color:#0b0c0c;">Step 2: Verify your subscription</div>
-        <div style="font-size:12px;color:#505a5f;margin-top:2px;">Sign in with Google to confirm</div>
-      </div>
-    </div>
-    <!-- Verify button -->
-    <button id="asVerifyBtn" onclick="verifySubscription()" style="width:100%;padding:13px;background:#003078;color:#FFD600;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;">&#x1F513; Verify &amp; Unlock</button>
-    <!-- Status message -->
-    <div id="asStatus" style="margin-top:12px;font-size:13px;text-align:center;min-height:20px;"></div>
+    <p style="font-size:14px;color:#0b0c0c;margin:0 0 18px;">Subscribe to <strong>ScamShieldUK</strong> on YouTube to unlock your free postcode safety report.</p>
+    <button onclick="(function(){ window.open('https://www.youtube.com/@ScamShieldUK?sub_confirmation=1','_blank','noopener'); try{localStorage.setItem('ss_area_safety_unlocked','1');}catch(e){} const fab=document.getElementById('areaSafetyBtn'); if(fab) fab.innerHTML='&#x1F513; <span class=\'as-fab-label\'>Postcode Area Check</span>'; closeAreaSafety(); setTimeout(showPostcodeModal,200); })()" style="width:100%;padding:13px;background:#ff0000;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;">▶ Subscribe on YouTube — Unlock</button>
   </div>
 </div>
 
@@ -2818,7 +2793,12 @@ function asIsUnlocked() {
 }
 
 function openAreaSafety() {
-  window.open('https://www.youtube.com/@ScamShieldUK', '_blank', 'noopener');
+  if(asIsUnlocked()) {
+    showPostcodeModal();
+    return;
+  }
+  document.getElementById('asSafetyOverlay').style.display = 'block';
+  document.getElementById('asSafetyModal').style.display = 'block';
 }
 function closeAreaSafety() {
   document.getElementById('asSafetyOverlay').style.display='none';
@@ -3184,7 +3164,7 @@ async function runAreaSafety() {
 </script>
 
 <!-- ══════════ FIXED BOTTOM-LEFT AREA SAFETY BUTTON ══════════ -->
-<button id="areaSafetyBtn" onclick="openAreaSafety()" class="as-fab" title="ScamShield on YouTube">▶ <span class="as-fab-label">ScamShield YouTube</span></button>
+<button id="areaSafetyBtn" onclick="openAreaSafety()" class="as-fab" title="Unlock Postcode Area Check">🔒 <span class="as-fab-label">Postcode Area Check</span></button>
 
 <script src="shared.js" defer></script>
 </body>
