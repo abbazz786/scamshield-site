@@ -282,22 +282,18 @@
        RESULTS — BOTTOM SHEET (mobile)
     ════════════════════════════ */
     .sheet-overlay {
-      display:none;
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.45);
-      z-index:98;
-      opacity:0; transition:opacity .3s ease;
+      display:none; /* Not used — results are full screen */
     }
-    .sheet-overlay.visible { opacity:1; }
+    .sheet-overlay.visible { display:none; }
 
     .results-panel {
       position: fixed;
-      left:0; right:0; bottom:0;
-      height: 75dvh;
+      left:0; right:0; bottom:0; top:0;
+      height: 100dvh;
       background: var(--white);
-      border-radius: 14px 14px 0 0;
+      border-radius: 0;
       border-top: 3px solid var(--blue);
-      z-index: 99;
+      z-index: 199;
       display: flex;
       flex-direction: column;
       transform: translateY(100%);
@@ -306,8 +302,24 @@
     }
     .results-panel.open { transform: translateY(0); }
 
-    /* Drag handle */
+    /* Desktop — restore side panel, not full screen */
+    @media (min-width: 768px) {
+      .results-panel {
+        position: static !important;
+        transform: none !important;
+        top: auto !important;
+        height: auto !important;
+        border-radius: 0 !important;
+        border-top: none !important;
+        z-index: auto !important;
+      }
+    }
+
+    /* Drag handle — hidden on mobile (close button only) */
     .sheet-handle {
+      display: none !important;
+    }
+    .sheet-handle-old {
       display: flex;
       justify-content: center;
       padding: 10px 0 6px;
@@ -1139,7 +1151,7 @@
 
 
 <!-- Sheet overlay -->
-<div class="sheet-overlay" id="sheetOverlay" onclick="ui.closeSheet()"></div>
+<div class="sheet-overlay" id="sheetOverlay"></div>
 
 <!-- ══════════ LEARN DRAWER ══════════ -->
 <!-- ══════════ NEARBY SCAMS SHEET ══════════ -->
