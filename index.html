@@ -2898,11 +2898,26 @@ async function verifySubscription() {
     const msg = err.message || 'Verification failed';
     if(msg.includes('cancelled') || msg.includes('popup_closed')) {
       status.innerHTML = '<span style="color:#505a5f;">Sign-in cancelled. Click verify to try again.</span>';
+      btn.disabled = false;
+      btn.textContent = '\u{1F513} Verify & Unlock';
     } else {
-      status.innerHTML = '<span style="color:#d4351c;">' + msg + '</span>';
+      // Fallback: send user to YouTube subscribe page
+      status.innerHTML = `
+        <div style="background:#fff3cd;padding:10px 12px;border-radius:8px;margin-top:4px;">
+          <div style="font-size:12px;font-weight:600;color:#856404;margin-bottom:6px;">Verification unavailable right now</div>
+          <div style="font-size:11px;color:#856404;margin-bottom:8px;">Subscribe on YouTube and come back to unlock.</div>
+          <button onclick="window.open('https://youtube.com/@ScamShieldUK?sub_confirmation=1','_blank','noopener');this.parentElement.innerHTML='<div style=\\'font-size:12px;color:#00703c;font-weight:600;padding:8px 0;\\'>Subscribed? Click the button below to unlock.</div>'" style="width:100%;padding:8px;background:#ff0000;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;">&#9654; Subscribe on YouTube</button>
+        </div>`;
+      btn.disabled = false;
+      btn.textContent = '\u{1F513} I\'ve Subscribed — Unlock';
+      btn.onclick = function() {
+        try { localStorage.setItem(AS_KEY, '1'); } catch(e){}
+        const fab = document.getElementById('areaSafetyBtn');
+        if(fab) fab.innerHTML = '&#x1F513;';
+        closeAreaSafety();
+        setTimeout(showPostcodeModal, 200);
+      };
     }
-    btn.disabled = false;
-    btn.textContent = '\u{1F513} Verify & Unlock';
   }
 }
 
