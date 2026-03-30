@@ -1449,3 +1449,154 @@ html, body {
     padding: 0 12px;
   }
 }
+
+/* ── DARK MODE BTN IN PILL NAV ────────────────────── */
+.float-pill-nav .nav-dm-btn {
+  padding: 6px 10px;
+  font-size: 16px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+/* ── AREA SAFETY HEADER BUTTON ────────────────────── */
+.area-safety-header-btn {
+  background: #003078;
+  color: #FFD600;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity .2s;
+}
+.area-safety-header-btn:hover { opacity: 0.9; }
+
+/* ── AREA SAFETY POPUP ───────────────────────────── */
+.area-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.area-popup-overlay.is-open { display: flex; }
+
+.area-popup-modal {
+  background: linear-gradient(180deg, #0a1a3a 0%, #0D0D1A 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: min(90vw, 380px);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+
+.area-popup-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #8888AA;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.area-popup-title {
+  color: #FFD600;
+  font-size: 19px;
+  margin-bottom: 6px;
+  font-weight: 800;
+}
+.area-popup-desc {
+  color: #C0C0E0;
+  font-size: 13px;
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+.area-popup-sub {
+  color: #8888AA;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+.area-popup-yt-btn {
+  width: 100%;
+  padding: 14px;
+  background: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.area-popup-yt-btn:hover { opacity: 0.9; }
+.area-popup-already {
+  color: #8888AA;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.area-popup-verify-btn {
+  padding: 10px 24px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #00F5FF;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.area-popup-verify-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* Unlocked state postcode input inside popup */
+.area-popup-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.area-popup-input-row input {
+  flex: 1;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  outline: none;
+  font-family: inherit;
+}
+.area-popup-input-row input::placeholder { color: #8888AA; }
+.area-popup-input-row button {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #667EEA, #764BA2);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.area-popup-input-row button:hover { opacity: 0.9; }

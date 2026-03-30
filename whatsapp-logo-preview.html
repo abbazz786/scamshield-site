@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScamShield WhatsApp Logo Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D0D1A; color: #fff; font-family: 'Inter', sans-serif; padding: 40px; min-height: 100vh; }
+  h1 { font-size: 24px; margin-bottom: 8px; }
+  p.sub { color: #8888AA; margin-bottom: 40px; font-size: 14px; }
+  .sizes { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; }
+  .size-item { text-align: center; }
+  .size-item span { display: block; color: #8888AA; font-size: 12px; margin-top: 8px; }
+  .logo-circle { border-radius: 50%; overflow: hidden; display: inline-block; }
+  .logo-circle img { display: block; width: 100%; height: 100%; }
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0; }
+  .nano-prompt { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; max-width: 700px; }
+  .nano-prompt h2 { font-size: 16px; margin-bottom: 12px; color: #FFD600; }
+  .nano-prompt pre { white-space: pre-wrap; font-size: 13px; line-height: 1.6; color: #C0C0E0; }
+  .copy-btn { margin-top: 12px; background: linear-gradient(135deg, #667EEA, #764BA2); border: none; color: #fff; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .copy-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<h1>ScamShield WhatsApp Community Logo</h1>
+<p class="sub">Right-click the largest one and "Save image as" to download. WhatsApp crops to a circle.</p>
+
+<div class="sizes">
+  <div class="size-item">
+    <div class="logo-circle" style="width:512px;height:512px"><img src="whatsapp-logo.svg" alt="ScamShield logo 512px"></div>
+    <span>512px (full size)</span>
+  </div>
+  <div class="size-item">
+    <div class="logo-circle" style="width:256px;height:256px"><img src="whatsapp-logo.svg" alt="ScamShield logo 256px"></div>
+    <span>256px</span>
+  </div>
+  <div class="size-item">
+    <div class="logo-circle" style="width:128px;height:128px"><img src="whatsapp-logo.svg" alt="ScamShield logo 128px"></div>
+    <span>128px</span>
+  </div>
+  <div class="size-item">
+    <div class="logo-circle" style="width:64px;height:64px"><img src="whatsapp-logo.svg" alt="ScamShield logo 64px"></div>
+    <span>64px (thumbnail)</span>
+  </div>
+  <div class="size-item">
+    <div class="logo-circle" style="width:40px;height:40px"><img src="whatsapp-logo.svg" alt="ScamShield logo 40px"></div>
+    <span>40px (chat list)</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="nano-prompt">
+  <h2>Nano Banana Prompt</h2>
+  <pre id="prompt">Create a circular logo icon for a WhatsApp community group called "ScamShield UK". HD 4K quality with 3D depth.
+
+Shield design (centre, takes ~55% height):
+- 3D metallic gold shield shape with gradient highlights (light gold #FFF176 top-left to deep gold #FF8F00 bottom-right)
+- Inner shield filled with deep navy blue (#001040) with subtle blue highlight at top
+- Bold gold checkmark/tick inside the shield
+- Shield has a glowing gold aura and drop shadow for 3D pop
+
+Text below shield:
+- "SCAMSHIELD" in uppercase, tech/military font (like Rajdhani or Orbitron), wide letter-spacing
+- "SCAM" in metallic gold, "SHIELD" in white
+- Thin glowing cyan (#00F5FF) horizontal line separator below
+- "UK" in cyan with neon glow, wide letter-spacing
+
+Background:
+- Deep space navy (#000a1e to #001a4d) radial gradient
+- Subtle hexagonal grid pattern in blue-purple (#667EEA at 10% opacity) for cybersecurity feel
+- Faint scan line overlay for HD screen texture
+- Cyan radial glow behind the shield
+- Tiny scattered light particle dots (cyan, gold, purple) for 4K detail
+- Thin concentric ring accents for depth
+- Gold rim highlight on outer circle edge
+
+Style: Premium, futuristic, cybersecurity. Feels like a smart protective AI system. 3D metallic effects, neon glows, dark tech aesthetic.</pre>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('prompt').textContent).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy prompt',2000)})">Copy prompt</button>
+</div>
+
+</body>
+</html>

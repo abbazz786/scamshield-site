@@ -364,3 +364,97 @@
   // Default: show check view
   switchView('check');
 })();
+
+/* ── AREA SAFETY POPUP ────────────────────────────── */
+(function () {
+  const AS_KEY = 'ss_area_safety_unlocked';
+  const popup = document.getElementById('areaPopup');
+  const headerBtn = document.getElementById('areaSafetyHeaderBtn');
+  const content = document.getElementById('areaPopupContent');
+
+  function isUnlocked() {
+    try { return localStorage.getItem(AS_KEY) === '1'; } catch (e) { return false; }
+  }
+
+  function openAreaPopup() {
+    if (isUnlocked()) showUnlockedState();
+    popup?.classList.add('is-open');
+  }
+
+  function closeAreaPopup() {
+    popup?.classList.remove('is-open');
+  }
+  window.closeAreaPopup = closeAreaPopup;
+
+  function showUnlockedState() {
+    if (!content) return;
+    if (headerBtn) headerBtn.textContent = '🔓 Area Safety Check';
+    content.innerHTML = `
+      <div style="font-size:36px;margin-bottom:12px;">🔓</div>
+      <h2 class="area-popup-title">Postcode Area Safety Check</h2>
+      <p class="area-popup-desc">✅ Unlocked! Enter your postcode below.</p>
+      <p class="area-popup-sub">Get your local safety score, crime data, and reporting contacts.</p>
+      <div class="area-popup-input-row">
+        <input type="text" id="areaPopupPostcode" placeholder="E.G. SW1A 1AA" maxlength="8" oninput="this.value=this.value.toUpperCase()" />
+        <button onclick="window.runAreaSafetyFromPopup()">Search</button>
+      </div>
+      <div id="areaPopupResults"></div>
+    `;
+    // Focus input
+    setTimeout(() => document.getElementById('areaPopupPostcode')?.focus(), 100);
+  }
+
+  // Header button opens popup
+  headerBtn?.addEventListener('click', function (e) {
+    e.stopPropagation();
+    openAreaPopup();
+  });
+
+  // Subscribe button — opens YouTube + unlocks
+  document.getElementById('areaPopupSubscribe')?.addEventListener('click', function () {
+    window.open('https://www.youtube.com/@ScamShieldUK?sub_confirmation=1', '_blank', 'noopener');
+    try { localStorage.setItem(AS_KEY, '1'); } catch (e) {}
+    showUnlockedState();
+  });
+
+  // Verify button — triggers Google OAuth verification (uses existing verifySubscription)
+  document.getElementById('areaPopupVerify')?.addEventListener('click', function () {
+    if (typeof verifySubscription === 'function') {
+      verifySubscription();
+    } else {
+      // Fallback: just unlock
+      try { localStorage.setItem(AS_KEY, '1'); } catch (e) {}
+      showUnlockedState();
+    }
+  });
+
+  // Close on overlay click
+  popup?.addEventListener('click', function (e) {
+    if (e.target === popup) closeAreaPopup();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAreaPopup();
+  });
+
+  // Bridge to existing runAreaSafety from popup
+  window.runAreaSafetyFromPopup = function () {
+    const input = document.getElementById('areaPopupPostcode');
+    const pc = input?.value?.trim();
+    if (!pc) return;
+    // Use existing postcode modal if available
+    const asInput = document.getElementById('asPostcodeInput');
+    if (asInput && typeof runAreaSafety === 'function') {
+      asInput.value = pc;
+      closeAreaPopup();
+      showPostcodeModal();
+      runAreaSafety();
+    }
+  };
+
+  // Update header button text if already unlocked
+  if (isUnlocked() && headerBtn) {
+    headerBtn.textContent = '🔓 Area Safety Check';
+  }
+})();

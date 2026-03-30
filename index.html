@@ -853,20 +853,41 @@
 <header class="site-header" role="banner">
   <a href="#home" class="site-logo" aria-label="ScamShield UK — Home">
     <svg viewBox="0 0 36 40" fill="none" aria-hidden="true">
-      <path d="M18 2L3 8v12c0 9.9 6.4 19.1 15 21.9C26.6 39.1 33 29.9 33 20V8L18 2z" fill="#ffdd00"/>
-      <path d="M18 5L5.5 10.5V20c0 8.5 5.5 16.4 12.5 18.8C25 36.4 30.5 28.5 30.5 20v-9.5L18 5z" fill="#003078"/>
-      <path d="M12 20l4 4 8-8" stroke="#ffdd00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="hdrGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#FFF176"/><stop offset="30%" stop-color="#FFD600"/>
+          <stop offset="60%" stop-color="#FFB300"/><stop offset="100%" stop-color="#FF8F00"/>
+        </linearGradient>
+        <linearGradient id="hdrInner" x1="0" y1="0" x2="0.5" y2="1">
+          <stop offset="0%" stop-color="#0a2a5e"/><stop offset="100%" stop-color="#001040"/>
+        </linearGradient>
+        <linearGradient id="hdrCheck" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#FFF176"/><stop offset="50%" stop-color="#FFD600"/><stop offset="100%" stop-color="#FFB300"/>
+        </linearGradient>
+        <filter id="hdrGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blur"/>
+          <feColorMatrix in="blur" type="matrix" values="0 0 0 0 1  0 0 0 0 0.84  0 0 0 0 0  0 0 0 0.35 0" result="gold"/>
+          <feMerge><feMergeNode in="gold"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g filter="url(#hdrGlow)">
+        <path d="M18 2L3 8v12c0 9.9 6.4 19.1 15 21.9C26.6 39.1 33 29.9 33 20V8L18 2z" fill="#000" opacity="0.25" transform="translate(0.4,0.8)"/>
+        <path d="M18 2L3 8v12c0 9.9 6.4 19.1 15 21.9C26.6 39.1 33 29.9 33 20V8L18 2z" fill="url(#hdrGold)"/>
+        <path d="M18 2L3 8v4L18 6l15-4V8L18 2z" fill="#FFFFFF" opacity="0.2"/>
+        <path d="M18 5L5.5 10.5V20c0 8.5 5.5 16.4 12.5 18.8C25 36.4 30.5 28.5 30.5 20v-9.5L18 5z" fill="url(#hdrInner)"/>
+        <path d="M18 5L5.5 10.5V14L18 8.5 30.5 14v-3.5L18 5z" fill="#667EEA" opacity="0.15"/>
+        <path d="M12 20l4 4 8-8" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.15" transform="translate(0.2,0.4)"/>
+        <path d="M12 20l4 4 8-8" stroke="url(#hdrCheck)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </g>
     </svg>
     <span class="site-logo-text">Scam<em>Shield</em><span class="site-logo-tld">.org.uk</span></span>
   </a>
-
-  <button class="nav-dm-btn" data-dm-toggle aria-label="Toggle dark/light mode">
-    <span data-dm-icon>🌙</span>
-  </button>
+  <button class="area-safety-header-btn" id="areaSafetyHeaderBtn" aria-label="Postcode Area Safety Check">🔒 Area Safety Check</button>
 </header>
 
 <!-- ══════════════ FLOATING PILL NAV ══════════════ -->
 <nav class="float-pill-nav" aria-label="Tool navigation">
+  <button class="nav-dm-btn" data-dm-toggle aria-label="Toggle dark/light mode"><span data-dm-icon>🌙</span></button>
   <button class="pill-btn active" data-view="check"><span>🔍</span> Check</button>
   <button class="pill-btn" data-view="blog"><span>📝</span> Blog</button>
   <button class="pill-btn" data-view="about"><span>ℹ️</span> About</button>
@@ -917,9 +938,9 @@
           <span class="scam-pill clickable" onclick="ui.openLearn('sim-swap')"><span style="animation:pillBounce .5s ease 6.0s infinite;display:inline-block;">📲</span> SIM Swap</span>
           <span class="scam-pill clickable" onclick="ui.openLearn('crypto')"><span style="animation:pillBounce .5s ease 7.199999999999999s infinite;display:inline-block;">💰</span> Crypto Fraud</span>
           <span class="scam-pill clickable" onclick="ui.openLearn('job-scam')"><span style="animation:pillBounce .5s ease 8.4s infinite;display:inline-block;">💼</span> Fake Job</span>
-          <span class="scam-pill clickable" onclick="ui.openLearn('bank-impersonation')"><span style="animation:pillBounce .5s ease 9.6s infinite;display:inline-block;">🧓</span> Elder Fraud</span>
-          <span class="scam-pill clickable" onclick="ui.openLearn('delivery')"><span style="animation:pillBounce .5s ease 10.799999999999999s infinite;display:inline-block;">🏠</span> Doorstep Scam</span>
-          <span class="scam-pill clickable" onclick="ui.openLearn('crypto')"><span style="animation:pillBounce .5s ease 12.0s infinite;display:inline-block;">🎮</span> Gaming Scam</span>
+          <span class="scam-pill clickable" onclick="ui.openLearn('elder-fraud')"><span style="animation:pillBounce .5s ease 9.6s infinite;display:inline-block;">🧓</span> Elder Fraud</span>
+          <span class="scam-pill clickable" onclick="ui.openLearn('doorstep')"><span style="animation:pillBounce .5s ease 10.799999999999999s infinite;display:inline-block;">🏠</span> Doorstep Scam</span>
+          <span class="scam-pill clickable" onclick="ui.openLearn('gaming-scam')"><span style="animation:pillBounce .5s ease 12.0s infinite;display:inline-block;">🎮</span> Gaming Scam</span>
           <span class="scam-pill clickable" onclick="ui.openLearnHome()">✨ 30+ more →</span>
         </div>
         <div style="margin-top:10px;padding:8px 12px;background:rgba(255,255,255,.07);border-radius:6px;border-left:3px solid #FFD600;font-size:11px;color:rgba(255,255,255,.75);line-height:1.8;animation:appTipGlow 3s ease-in-out infinite, appTipSlide .6s ease both;animation-delay:0s,1.5s;opacity:0;">
@@ -1212,6 +1233,24 @@
   </div>
   <div id="asReportBody" style="flex:1;overflow-y:auto;padding:16px 20px;">
     <div style="text-align:center;padding:32px 0;color:#505a5f;font-size:14px;">Enter your postcode above to get your local safety report.</div>
+  </div>
+</div>
+
+<!-- ══════════ AREA SAFETY POPUP ══════════ -->
+<div id="areaPopup" class="area-popup-overlay">
+  <div class="area-popup-modal">
+    <button class="area-popup-close" onclick="closeAreaPopup()">&times;</button>
+    <div id="areaPopupContent">
+      <div class="area-popup-locked">
+        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+        <h2 class="area-popup-title">Postcode Area Safety Check</h2>
+        <p class="area-popup-desc">Unlock your free local safety report with real crime data.</p>
+        <p class="area-popup-sub">Subscribe to <strong style="color:#fff;">ScamShieldUK</strong> on YouTube to unlock.</p>
+        <button class="area-popup-yt-btn" id="areaPopupSubscribe">▶ Subscribe on YouTube — Unlock</button>
+        <p class="area-popup-already">Already subscribed?</p>
+        <button class="area-popup-verify-btn" id="areaPopupVerify">🔓 Verify &amp; Unlock</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2123,6 +2162,27 @@ const SCAM_DATA = [
     blurb:'Scammers pretend to be your bank, claiming suspicious activity and asking you to move money to a "safe account".',
     signs:['"Suspicious transaction detected on your account — call us immediately"','Asks you to move money to a new "safe account" they set up','Asks for your full PIN, password, or online banking login','Offers to send a courier to collect your bank card','Caller ID shows your real bank\'s number (it can be spoofed)','Creates extreme urgency — "you must act now or lose everything"'],
     howReport:['Hang up and call your bank using the number on the back of your card','Or call 159 — connects you directly to your real bank','Never move money to a "safe account" — banks never ask this','Report to Report Fraud: reporting.reportfraud.police.uk'],
+    reportUrl:'https://reporting.reportfraud.police.uk/'
+  },
+  {
+    id:'elder-fraud', icon:'🧓', name:'Elder Fraud / Pension Scam', risk:'critical', riskLabel:'Critical — Over-55s lose £4.7B/year',
+    blurb:'Scammers target older adults with pension liberation scams, fake NHS calls, rogue traders, and courier fraud — exploiting trust and isolation.',
+    signs:['Cold call about your pension — "free pension review" or "unlock your pension early"','Doorstep visitors offering free roof inspections or garden work then demanding large fees','Phone call claiming to be NHS, police, or your bank asking for personal details','Pressure to make quick financial decisions — "this offer expires today"','Someone befriends you then asks to borrow money or access your accounts','Requests for gift cards, wire transfers, or cash payments','Claiming a relative is in trouble and needs money urgently (grandparent scam)'],
+    howReport:['Never agree to anything on the doorstep or over the phone — take time to think','Report to Report Fraud: reporting.reportfraud.police.uk','Call your bank on 159 if you suspect financial fraud','Contact Age UK: 0800 678 1602 (free helpline for older adults)','Report rogue traders to Citizens Advice: citizensadvice.org.uk','Report pension scams to the FCA: fca.org.uk/consumers/report-scam','Tell a trusted family member or friend immediately'],
+    reportUrl:'https://reporting.reportfraud.police.uk/'
+  },
+  {
+    id:'doorstep', icon:'🏠', name:'Doorstep Scam', risk:'high', riskLabel:'High — 85% target elderly homeowners',
+    blurb:'Rogue traders, fake charity collectors, and bogus officials knock on your door offering services or demanding payment.',
+    signs:['Unexpected knock offering "bargain" roof repairs, driveway work, or tree cutting','Claims to be from the council, water board, or police — asks to come inside','Demands cash payment upfront before any work is done','"We noticed damage to your property while working next door"','Offers to drive you to the bank to withdraw cash','Shows fake ID or uniform that doesn\'t look quite right','Creates urgency — "this price is only available today"'],
+    howReport:['Never let unexpected callers inside your home','Legitimate tradespeople will give you time to think — if they pressure you, close the door','Report to Report Fraud: reporting.reportfraud.police.uk','Report rogue traders to Citizens Advice consumer helpline: 0808 223 1133','Contact your local Trading Standards through Citizens Advice','If you feel threatened, call 999'],
+    reportUrl:'https://reporting.reportfraud.police.uk/'
+  },
+  {
+    id:'gaming-scam', icon:'🎮', name:'Gaming Scam', risk:'high', riskLabel:'High — 46% of gamers targeted',
+    blurb:'Fake free V-Bucks, Robux, or skin generators, phishing links in game chats, and fraudulent item trades targeting young gamers.',
+    signs:['"Free V-Bucks / Robux / FIFA coins — click this link"','Website asks for your game login credentials to "generate" currency','Discord or in-game DM offering rare items for real money outside the game','Steam or Xbox account "verification" email with a suspicious link','Someone offers to boost your account for a fee then steals it','Fake giveaway — "drop your login to enter the raffle"','Requests payment via gift cards, crypto, or PayPal Friends & Family'],
+    howReport:['NEVER share your login details with anyone','Enable 2FA on all gaming accounts (Steam, Xbox, PlayStation, Epic, Roblox)','Report to Report Fraud: reporting.reportfraud.police.uk','Report the scammer on the gaming platform directly','Report to CEOP if a child is being targeted: ceop.police.uk','Change your password immediately if you shared login details','Contact your bank if you made a payment'],
     reportUrl:'https://reporting.reportfraud.police.uk/'
   },
   {
@@ -3038,7 +3098,7 @@ async function runAreaSafety() {
         const rs=REGIONAL_SCAMS[region];
         scamIntel=`<div style="margin-bottom:16px;">
           <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">Active Scams in Your Region</div>
-          ${rs.slice(0,3).map(s=>`<div style="display:flex;gap:8px;padding:7px 10px;background:#fff3cd;border-radius:6px;margin-bottom:5px;font-size:12px;"><span>&#x26A0;&#xFE0F;</span><span>${s}</span></div>`).join('')}
+          ${rs.slice(0,3).map(s=>`<div style="display:flex;gap:8px;padding:7px 10px;background:#fff3cd;border-radius:6px;margin-bottom:5px;font-size:12px;color:#1a1a2e;"><span>&#x26A0;&#xFE0F;</span><span>${s}</span></div>`).join('')}
         </div>`;
       }
     }
@@ -3126,7 +3186,7 @@ async function runAreaSafety() {
       <!-- Action plan -->
       <div style="margin-bottom:16px;">
         <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#505a5f;margin-bottom:8px;">Your Action Plan</div>
-        ${actions.map((a,i)=>`<div style="display:flex;gap:10px;padding:8px 10px;background:#f8f8f8;border-radius:6px;margin-bottom:5px;font-size:12px;"><span style="width:20px;height:20px;background:#003078;color:#FFD600;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0;">${i+1}</span><span>${a}</span></div>`).join('')}
+        ${actions.map((a,i)=>`<div style="display:flex;gap:10px;padding:8px 10px;background:#f8f8f8;border-radius:6px;margin-bottom:5px;font-size:12px;color:#1a1a2e;"><span style="width:20px;height:20px;background:#003078;color:#FFD600;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0;">${i+1}</span><span>${a}</span></div>`).join('')}
       </div>
 
       <!-- Local contacts -->
